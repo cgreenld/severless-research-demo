@@ -2,18 +2,28 @@
 
 import json
 import time
+import os
+from decouple import config as config_env
+import ldclient
+from ldclient.config import Config
 
 print('Starting function')
 
 start_time = time.time()
 
-import ldclient
-from ldclient.config import Config
-ldclient.set_config(Config("sdk-5ceac771-58d1-47c3-af81-b07acea6fe10"))
-# ldclient.set_config(Config(sdk_key='sdk-5ceac771-58d1-47c3-af81-b07acea6fe10',
-#     base_uri="http://localhost:8030",
-#     stream_uri="http://localhost:8030")
-# )
+# Get environment variables
+sdk_key = config_env('SDKKEY_test')
+environ = config_env('env')
+proxy_state = config_env('proxy_state')
+
+
+if proxy_state == 'off':
+    ldclient.set_config(Config(sdk_key=sdk_key))
+else:
+    ldclient.set_config(Config(sdk_key=sdk_key,
+        base_uri="http://localhost:8030", #these don't have cloud urls yet, but will eventually be set with env variables as well
+        stream_uri="http://localhost:8030")
+    )
 if ldclient.get().is_initialized():
     print("SDK successfully initialized!")
 else:
