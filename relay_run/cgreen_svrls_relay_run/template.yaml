@@ -1,35 +1,7 @@
-# severless-research-demo
-This is a repo designed to faciliate the testing of a lambda and the impact of SDK startup time on cold start
-
-DynamoTables Used - Purpose
-- cgreenSeverlessFlagStore - store flags to compare against homegrown
-- cgreenSeverlessProxyFlagStore - store flags from proxy service
-- cgreenSeverlessTestResults - store timing results from lambda runs so they can be compared at scale
-
-Notes From Sync 1
-- play with failure modes, you can put a proxy between LD relay and LD, then shut off the network connection
-- Maybe explore relay porxy and getting out of sync
-- java or c sharp could be an option, node could be an option. Think extension vs iteration 1
-- let's go ahead and split it into 3 runtimes
-- serverless application model for aws to upload 
-- our serverless best practices doc and validating some of the best practices there
-
-
-
-
-
-
-
-# Resources Used
-- https://docs.aws.amazon.com/lambda/latest/dg/python-package.html#python-package-dependencies
-- https://lumigo.io/blog/canary-deployment-with-launchdarkly-and-aws-lambda/
-- https://able.bio/rhett/how-to-set-and-get-environment-variables-in-python--274rgt5
-
-
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  cgreen_svrls_db_run
+  cgreen-relay
 
   Sample SAM Template for cgreen_svrls_db_run
 
@@ -39,11 +11,11 @@ Globals:
     Timeout: 3
 
 Resources:
-  dbSvrlsRun:
+  relaySvrlsRun:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      FunctionName: cgreen-dbSvrlsRun
-      CodeUri: cgreen_svrls_db_run/
+      FunctionName: cgreen-relaySvrlsRun
+      CodeUri: cgreen_svrls_relay_run/
       Handler: app.lambda_handler
       Runtime: python3.9
       Architectures:
@@ -59,12 +31,12 @@ Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  dbSvrlsRunApi:
+  relaySvrlsRunApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
     Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  dbSvrlsRun:
+  relaySvrlsRun:
     Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt dbSvrlsRun.Arn
-  dbSvrlsRunIamRole:
+    Value: !GetAtt relaySvrlsRun.Arn
+  relaySvrlsRunIamRole:
     Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt dbSvrlsRun.Arn
+    Value: !GetAtt relaySvrlsRun.Arn

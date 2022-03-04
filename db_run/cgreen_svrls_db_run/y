@@ -1,0 +1,12 @@
+version = 0.1
+[y]
+[y.deploy]
+[y.deploy.parameters]
+stack_name = "cgreen"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1vhz8b2r0rt07"
+s3_prefix = "cgreen"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+disable_rollback = true
+image_repositories = []
