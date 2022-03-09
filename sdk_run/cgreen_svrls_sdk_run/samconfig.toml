@@ -2,9 +2,9 @@ version = 0.1
 [default]
 [default.deploy]
 [default.deploy.parameters]
-stack_name = "cgreen-svrls-sdk-run"
+stack_name = "cgreen-sdk"
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1vhz8b2r0rt07"
-s3_prefix = "cgreen-svrls-sdk-run"
+s3_prefix = "cgreen-sdk"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"

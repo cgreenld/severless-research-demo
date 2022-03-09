@@ -3,7 +3,7 @@ Transform: AWS::Serverless-2016-10-31
 Description: >
   cgreen
 
-  Sample SAM Template for cgreen_svrls_db_run
+  Sample SAM Template for cgreen_svrls_sdk_run
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
