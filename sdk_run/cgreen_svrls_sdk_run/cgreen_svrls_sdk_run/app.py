@@ -3,7 +3,6 @@
 import json
 import time
 import os
-from xml.dom.xmlbuilder import DOMEntityResolver
 import ldclient
 from ldclient.config import Config
 import uuid
@@ -15,6 +14,7 @@ print('Starting function')
 sdk_key = os.environ.get('SDKKEY_test')
 environ = os.environ.get('env')
 table_name = os.environ.get("table_name")
+flag_name = os.environ.get("flag_name")
 
 
 start_time = time.time()
@@ -28,6 +28,8 @@ else:
 client = ldclient.get()
 print("SDK Init Time: --- %s seconds ---" % sdk_init_time)
 
+sessionID = str(uuid.uuid1())
+
 
 
 def lambda_handler(event, context):
@@ -38,7 +40,7 @@ def lambda_handler(event, context):
 
     user = {"key": "user@test.com"}
     flag_start_time = time.time()
-    show_feature = client.variation("march-test-flag", user, False)
+    show_feature = client.variation(flag_name, user, False)
     flag_eval_time = time.time() - flag_start_time
     print("Flag Eval Time: --- %s seconds ---" % flag_eval_time)
     if show_feature:
@@ -49,16 +51,20 @@ def lambda_handler(event, context):
     #update dynamoDB table
     dynamodb = boto3.resource('dynamodb', 'us-east-1')
 
-    table = dynamodb.Table('cgreenSeverlessFlagStore-dev')
+    table = dynamodb.Table(table_name)
     table.put_item(
         Item={
-                'runID': str(start_time),
+                'runID': str(uuid.uuid1()),
                 'run_type': 'SDK',
+                'key_id': sdk_key[:8],
                 'sdk_init_timestamp': str(sdk_init_time),
                 'flag_call_timestamp': str(flag_eval_time),
-                'flag': 'march-test-flag',
+                'flag': flag_name,
+                'sessionID': sessionID,
+                'region': 'us-east-1'
             }
         )
+    print("Successfully put to: " + table_name)
 
 
     return event['key1']  # Echo back the first key value
