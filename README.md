@@ -1,20 +1,8 @@
 # severless-research-demo
 This is a repo designed to faciliate the testing of a lambda and the impact of SDK startup time on cold start
 
-DynamoTables Used - Purpose
-- cgreenSeverlessFlagStore - store flags to compare against homegrown
-- cgreenSeverlessProxyFlagStore - store flags from proxy service
-- cgreenSeverlessTestResults - store timing results from lambda runs so they can be compared at scale
+Confluence Doc: https://launchdarkly.atlassian.net/wiki/spaces/REV/pages/2031091936/Research+The+Relays+and+Severless+Functions
 
-EC2 Instances Used - Purpose
-- testing-relay - ld proxy go app set up without a external data store for proxy into system
-- testing-relay-db - ld proxy go app set up with dynamo DB data store set up for deamon mode
-
-Notes From Sync 1
-- play with failure modes, you can put a proxy between LD relay and LD, then shut off the network connection
-- Maybe explore relay porxy and getting out of sync
-- java or c sharp could be an option, node could be an option. Think extension vs iteration 1
-- our serverless best practices doc and validating some of the best practices there
 
 
 
